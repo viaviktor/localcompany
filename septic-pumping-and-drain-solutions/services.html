@@ -304,7 +304,7 @@
     <p class="section-subheading">Comprehensive Septic & Drain Services solutions for Antelope and the surrounding Sacramento County area</p>
     <div class="row g-4">
       <div class="col-lg-7">
-        We've been handling septic and drain systems here in Antelope since 2003, and it's really the backbone of what we do. Most of us out here aren't connected to city sewer lines, so your septic system is critical. We pump tanks, clean drains, diagnose problems, and handle repairs. Whether you're dealing with slow drains, backups, or just need routine maintenance to keep things running smoothly, we've seen it all and know what it takes to keep these systems working properly.
+        We've been handling septic and drain issues in Antelope since 2003, and honestly, it's what we know best. Most of our work is pumping out septic tanks before they cause problems—we typically recommend every three to five years depending on household size. We also diagnose and fix drain line issues, which can get tricky out here since a lot of properties aren't on city sewer. If your drains are backing up or your tank is overflowing, we'll get out there and figure out what's actually going on, not just guess at it.
       </div>
       <div class="col-lg-4 offset-lg-1">
         <h3 style="color:var(--corp-blue);font-weight:700;margin-bottom:.75rem;font-size:.9rem;text-transform:uppercase;letter-spacing:.06em;">Services Include</h3>
@@ -407,7 +407,12 @@
       <div class="col-12">
         <div class="iframe-card">
           <div class="iframe-label">&#128308; Septic Pumping and Drain Solutions — Other Pages</div>
-          <iframe src="https://viaviktor.github.io/localcompany/septic-pumping-and-drain-solutions/feed.rss" height="220" loading="lazy" title="Septic Pumping and Drain Solutions RSS Feed"></iframe>
+          <div id="b-rss-feed" style="padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.55rem;">
+            <p style="color:#6c757d;font-size:.9rem;margin:0;">Loading pages&hellip;</p>
+          </div>
+          <div style="padding:.5rem 1.5rem 1rem;font-size:.8rem;">
+            <a href="https://viaviktor.github.io/localcompany/septic-pumping-and-drain-solutions/feed.rss" target="_blank" rel="noopener noreferrer" style="color:var(--corp-accent);font-weight:600;">&#128308; View RSS Feed &rarr;</a>
+          </div>
         </div>
       </div>
       <div class="col-lg-6">
@@ -477,5 +482,32 @@
 
 
 
+<script>
+(function () {
+  var feedUrl = 'https://viaviktor.github.io/localcompany/septic-pumping-and-drain-solutions/feed.rss';
+  var container = document.getElementById('b-rss-feed');
+  if (!feedUrl || !container) return;
+  fetch(feedUrl)
+    .then(function (r) { return r.text(); })
+    .then(function (xml) {
+      var doc = new DOMParser().parseFromString(xml, 'application/xml');
+      var items = Array.from(doc.querySelectorAll('item'));
+      if (!items.length) { container.innerHTML = '<p style="color:#6c757d;font-size:.9rem;margin:0;">No items found.</p>'; return; }
+      container.innerHTML = items.map(function (item) {
+        var title = (item.querySelector('title') || {}).textContent || '';
+        var link  = (item.querySelector('link')  || {}).textContent || '#';
+        var pub   = (item.querySelector('pubDate') || {}).textContent || '';
+        var date  = pub ? new Date(pub).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+        return '<div style="background:var(--corp-accent-light);border:1px solid #c9dcf7;border-radius:6px;padding:.7rem 1rem;transition:border-color .2s;">' +
+               '<a href="' + link + '" target="_blank" rel="noopener noreferrer" style="color:var(--corp-blue);font-weight:600;text-decoration:none;font-size:.92rem;display:block;">' + title + '</a>' +
+               (date ? '<div style="font-size:.73rem;color:#6c757d;margin-top:.2rem;">' + date + '</div>' : '') +
+               '</div>';
+      }).join('');
+    })
+    .catch(function () {
+      container.innerHTML = '<p style="color:#6c757d;font-size:.9rem;margin:0;">Could not load feed. <a href="' + feedUrl + '" target="_blank" rel="noopener" style="color:var(--corp-accent);font-weight:600;">View directly &rarr;</a></p>';
+    });
+})();
+</script>
 </body>
 </html>
